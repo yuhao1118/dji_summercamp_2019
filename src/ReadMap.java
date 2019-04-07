@@ -1,22 +1,31 @@
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /*
- * @Description: Get a map from a file
+ * @Description: Read and get a map object from a file
  * @Author: Yuhao Li
  * @Date: 07/04/2019
  */
 public final class ReadMap {
 
+    /*Define map representings*/
+    public final static char WORKABLE = '0';
+    public final static char BAR = '1';
+    public final static char PATH = '2';
+    public final static char START = 'S';
+    public final static char END = 'E';
+
     public static Map read(String filename) {
         /*
          * @Description: read map file
          * @Param: [filename]
-         * @return:  map[][]
+         * @return:  map
          */
 
+        // map[y][x] match the coordinate (x,y)
         char[][] map;
 
         if (filename == null) {
@@ -33,11 +42,11 @@ public final class ReadMap {
             }
 
             FileInputStream fis = new FileInputStream(file);
-            scanner = new Scanner(new BufferedInputStream(fis), "UTF-8");
+            scanner = new Scanner(new BufferedInputStream(fis), StandardCharsets.UTF_8);
 
             //read first line (height, width)
-            String rcLine = scanner.nextLine();
-            String[] rc = rcLine.trim().split("\\s+");
+            String rc_line = scanner.nextLine();
+            String[] rc = rc_line.trim().split("\\s+");
 
             int row = Integer.parseInt(rc[0]);
             int col = Integer.parseInt(rc[1]);
@@ -47,7 +56,8 @@ public final class ReadMap {
             Node end = null;
 
             map = new char[row][col];
-            //读取后续的row行
+
+            // read following rows
             for (int i = 0; i < row; i++) {
                 String line = scanner.nextLine();
 
@@ -57,8 +67,8 @@ public final class ReadMap {
 
                 for (int j = 0; j < col; j++) {
                     map[i][j] = line.charAt(j);
-                    if(map[i][j] == 'S') start = new Node(j, i);
-                    if(map[i][j] == 'E') end = new Node(j, i);
+                    if(map[i][j] == START) start = new Node(j, i);
+                    if(map[i][j] == END) end = new Node(j, i);
                 }
             }
             return new Map(map, col, row, start, end);

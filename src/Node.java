@@ -15,7 +15,7 @@ public class Node implements Comparable<Node>{
         * @Description: Initialising Node through /*
         * a point. Use for constructing the first Node
         * @Param: [x, y]
-        * @return:
+        * @return: null
         */
 
         this.point = new Point(x, y); // One node with one point object
@@ -26,7 +26,7 @@ public class Node implements Comparable<Node>{
          * @Description: Initialising Node through /*
          * parent node.
          * @Param: [point, parent, g, h]
-         * @return:
+         * @return: null
          */
 
          this.point = point;
@@ -41,7 +41,7 @@ public class Node implements Comparable<Node>{
         * @Description: compareTo interface
         * 0 -- equal; 1 -- greater than; -1 -- less than
         * @Param: [o]
-        * @return:
+        * @return: null
         */
         if (o == null) return -1;
         if(this.e_cost + this.t_cost > o.e_cost + o.t_cost)

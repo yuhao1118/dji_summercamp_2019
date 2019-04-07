@@ -9,16 +9,12 @@ import java.util.Queue;
  * @Date: 06/04/2019
  */
 public class Algo {
-    /*Define map representings*/
-    public final static int BAR = '1';
-    public final static int PATH = '2';
-
     /*Define E cost price*/
     public final static int DIRECT = 10; // move directly
     public final static int DIAGONAL = 14;  // move diagonally
 
     /*Define open/close lists*/
-    Queue<Node> open_list = new PriorityQueue<>(); // Queue the Nodes in ascending order (use Comparable interface)
+    Queue<Node> open_list = new PriorityQueue<>(); // Queue the Nodes in ascending order (Comparable interface)
     List<Node> close_list = new ArrayList<>();  //Simply holding the Nodes, no order required
 
     public void start(Map map){
@@ -90,28 +86,30 @@ public class Algo {
                 int t_cost = cal_t_cost(end.point, current_point);
 
                 if (is_end_point(end.point, current_point)) {
+
+                    // map.end is an reference, changes in here
+                    // will also change the map.end object
                     child = end;
                     child.parent = current;
                     child.e_cost = e_cost;
                     child.t_cost = t_cost;
+
+                    // if it is the end point, add to the close_list
                     close_list.add(child);
                 } else {
                     child = new Node(current_point, current, e_cost, t_cost);
 
-                    // add to open_list
-                    open_list.add(child);
+                    open_list.add(child);   // add to open_list
                 }
-
             }
             // if the child is already in the list
             // the new e_cost is less than the previous e_cost
             // need to be refresh some value
             else if (child.e_cost > e_cost) {
-                child.e_cost = e_cost; // no need to refresh t_cost, will not change
-                child.parent = current;
+                child.e_cost = e_cost;  // no need to refresh t_cost, will not change
+                child.parent = current; // refresh the parent
 
-                // add to open_list
-                open_list.add(child);
+                open_list.add(child);   // add to open_list
             }
         }
     }
@@ -128,7 +126,7 @@ public class Algo {
             return false;
 
         // Accessible ?
-        if (map.map[y][x] == BAR)
+        if (map.map[y][x] == ReadMap.BAR)
             return false;
 
         // In the close_list ?
@@ -175,24 +173,6 @@ public class Algo {
         return null;
     }
 
-    public Node find_in_close(Point current){
-        /*
-        * @Description: find a node in close_list
-        * @Param: [current]
-        * @return:  node
-        */
-
-        // if the close_list is empty
-        if (close_list.isEmpty()) return null;
-
-        for (Node node : close_list) {
-            if (node.point.x == current.x && node.point.y == current.y)
-                return node;
-        }
-
-        return null;
-    }
-
     public int cal_t_cost(Point end, Point current) {
         /*
          * @Description: Use Manhattan method to predict the t_cost
@@ -226,7 +206,7 @@ public class Algo {
         while (end != null){
             Point current_point = end.point;
             if (!current_point.equals(map.start.point) && !current_point.equals(map.end.point))
-                solution_map[current_point.y][current_point.x] = PATH;
+                solution_map[current_point.y][current_point.x] = ReadMap.PATH;
             end = end.parent;
         }
 
@@ -234,6 +214,12 @@ public class Algo {
     }
 
     public void print_map(Map map){
+        /*
+        * @Description: print the map in console
+        * @Param: [map]
+        * @return: null
+        */
+
         for(int i=0; i<map.height; i++){
             for(int j=0; j<map.width; j++){
                 System.out.print(map.map[i][j]+" ");

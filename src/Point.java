@@ -7,7 +7,7 @@ public class Point {
         /*
         * @Description: Constructor of Point
         * @Param: [x, y]
-        * @return:  None
+        * @return: null
         */
         this.x = x;
         this.y = y;
@@ -18,8 +18,7 @@ public class Point {
         /*
         * @Description: equals function for coordinate comparation
         * @Param: [obj]
-        * @return:  True -- equal
-        *           False -- not equal
+        * @return:  true -- equal; false -- not equal
         */
 
         // if obj is null, not equal
